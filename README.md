@@ -16,7 +16,7 @@ AzureFunctionWithSwagger/
 ├── Startup.cs
 └── README.md
 ├── Configuration/
-	├── OpenApiConfigurationOptions.cs
+    ├── OpenApiConfigurationOptions.cs
 ```
 
 ### Files
