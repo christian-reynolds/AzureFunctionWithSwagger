@@ -153,7 +153,11 @@ After running the function locally, you can access the SwaggerUI at `http://loca
 
 ## Deployment
 
-Deploy the function to Azure using the Azure CLI or Visual Studio. Refer to the [official documentation](https://docs.microsoft.com/azure/azure-functions/functions-deploy-cli) for more details.
+Deploy the function to Azure using the Azure CLI or Visual Studio. Refer to the [official documentation](https://learn.microsoft.com/en-us/cli/azure/functionapp/deployment?view=azure-cli-latest) for more details.
+
+## Contributing
+
+Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
 
 ## License
 
