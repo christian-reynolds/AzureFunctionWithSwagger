@@ -13,6 +13,11 @@ namespace AzureFunctionWithSwagger
 {
     public class ServiceBusFunction
     {
+//        /// <summary>
+//        /// ServiceBusTrigger function
+//        /// </summary>
+//        /// <param name="myQueueItem"></param>
+//        /// <param name="log"></param>
 //        [FunctionName("ServiceBusFunction")]
 //        public void Run([ServiceBusTrigger("myqueue", Connection = "ServiceBusConnection")] string myQueueItem, ILogger log)
 //        {
@@ -24,6 +29,12 @@ namespace AzureFunctionWithSwagger
 //#endif
 //        }
 
+        /// <summary>
+        /// ServiceBusTrigger function documentation.  This is only used for OpenApi documentation purposes!
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
         [FunctionName("DocumentServiceBusFunction")]
         [OpenApiOperation(operationId: "ServiceBusFunction", tags: new[] { "servicebus" })]
         [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(ServiceBusMessage), Required = true, Description = "The Service Bus message payload")]
