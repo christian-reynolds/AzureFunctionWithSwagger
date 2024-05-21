@@ -12,9 +12,9 @@ using System.Net;
 
 namespace AzureFunctionWithSwagger
 {
-    public static class Function1
+    public static class HttpFunction
     {
-        [FunctionName("Function1")]
+        [FunctionName("HttpFunction")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "example" })]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The name parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(string), Description = "The OK response")]
