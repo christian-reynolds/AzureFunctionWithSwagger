@@ -15,6 +15,8 @@ AzureFunctionWithSwagger/
 ├── ServiceBusFunction.cs
 ├── Startup.cs
 └── README.md
+├── Configuration/
+	├── OpenApiConfigurationOptions.cs
 ```
 
 ### Files
@@ -26,6 +28,8 @@ AzureFunctionWithSwagger/
 - **local.settings.json**: Local settings file for running the function locally.
 - **ServiceBusFunction.cs**: Contains the Service Bus function and the OpenAPI documentation function.
 - **Startup.cs**: Configures services and middleware for the function app.
+- **OpenApiConfigurationOptions.cs**: Custom OpenAPI configuration options.
+- **README.md**: This readme file.
 
 ## Prerequisites
 
