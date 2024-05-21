@@ -12,6 +12,7 @@ AzureFunctionWithSwagger/
 ├── Function1.cs
 ├── host.json
 ├── local.settings.json
+├── ServiceBusFunction.cs
 ├── Startup.cs
 └── README.md
 ```
@@ -20,9 +21,10 @@ AzureFunctionWithSwagger/
 
 - **.gitignore**: Specifies files and directories to be ignored by Git.
 - **AzureFunctionWithSwagger.csproj**: The project file for the Azure Function.
-- **Function1.cs**: Contains the implementation of the Azure Function.
+- **Function1.cs**: Contains the implementation of the example HTTP-triggered function.
 - **host.json**: Configuration file for the function host.
 - **local.settings.json**: Local settings file for running the function locally.
+- **ServiceBusFunction.cs**: Contains the Service Bus function and the OpenAPI documentation function.
 - **Startup.cs**: Configures services and middleware for the function app.
 
 ## Prerequisites
@@ -56,7 +58,7 @@ AzureFunctionWithSwagger/
 
 ### Function Implementation
 
-The function implementation can be found in `Function1.cs`:
+#### HTTP Trigger Example (`Function1.cs`)
 
 ```csharp
 using Microsoft.Azure.WebJobs;
@@ -84,6 +86,54 @@ public static class Function1
         string name = req.Query["name"];
 
         return new OkObjectResult($"Hello, {name}");
+    }
+}
+```
+
+#### Service Bus Trigger Function (ServiceBusFunction.cs)
+
+```csharp
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.ServiceBus;
+using Microsoft.Extensions.Logging;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.OpenApi.Models;
+using System.Net;
+
+namespace AzureFunctionWithSwagger
+{
+    public static class MyServiceBusFunction
+    {
+#if !DEBUG
+        [FunctionName("ServiceBusFunction")]
+        public static void Run(
+            [ServiceBusTrigger("myqueue", Connection = "ServiceBusConnection")] string myQueueItem,
+            ILogger log)
+        {
+            log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
+        }
+#endif
+
+        [OpenApiOperation(operationId: "ServiceBusFunction", tags: new[] { "servicebus" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(string), Description = "The OK response")]
+        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(ServiceBusMessage), Required = true, Description = "The Service Bus message payload")]
+        public static IActionResult DocumentRun(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "servicebus/doc")] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("Documenting Service Bus function for OpenAPI.");
+
+            string requestBody = new StreamReader(req.Body).ReadToEnd();
+            var data = JsonConvert.DeserializeObject<ServiceBusMessage>(requestBody);
+
+            // No actual processing; this method is for OpenAPI documentation only
+            return new OkObjectResult($"Received message: {data.Message}");
+        }
+    }
+
+    public class ServiceBusMessage
+    {
+        public string Message { get; set; }
     }
 }
 ```
@@ -118,7 +168,8 @@ The `local.settings.json` file contains the configuration settings for running t
     "IsEncrypted": false,
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+		"ServiceBusConnection": "UseDevelopmentServiceBus=true"
     }
 }
 ```
